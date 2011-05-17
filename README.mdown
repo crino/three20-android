@@ -1,0 +1,13 @@
+three20-android
+=======
+
+Three20-android is the porting to Android of Three20 library.
+
+Packages
+=========
+
+At the moment the packages available are:
+	* com.three20.network
+	* com.three20.ns
+	* com.three20.ui
+	* com.three20.util
