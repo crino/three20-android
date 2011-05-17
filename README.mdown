@@ -7,7 +7,7 @@ Packages
 =========
 
 At the moment the packages available are:
-	* com.three20.network
-	* com.three20.ns
-	* com.three20.ui
-	* com.three20.util
+* com.three20.network
+* com.three20.ns
+* com.three20.ui
+* com.three20.util
