@@ -264,7 +264,7 @@ public class TTURLRequest {
 		 * This method will not be called if the data is loaded immediately from
 		 * the cache.
 		 * 
-		 * @see requestDidFinishLoad:
+		 * @see requestDidFinishLoad
 		 */
 		public void requestDidStartLoad(TTURLRequest request) {
 		}

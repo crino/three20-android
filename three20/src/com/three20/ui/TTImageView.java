@@ -16,10 +16,14 @@ public class TTImageView extends ImageView {
 	private Bitmap 			mImage;
 	private TTURLRequest	mRequest;
 	private Handler			mHandler;
+	private TTImageViewDelegate	mDelegate;
 	
 	private class TTURLRequestDelegateImpl extends TTURLRequestDelegate {
 		@Override
 		public void requestDidStartLoad(TTURLRequest request) {
+			if (mDelegate != null) {
+				mDelegate.imageViewDidStartLoad(TTImageView.this);
+			}
 		}
 		
 		@Override
@@ -32,17 +36,26 @@ public class TTImageView extends ImageView {
 					TTImageView.this.setImageBitmap(mImage);	
 				}
 			});
+			if (mDelegate != null) {
+				mDelegate.imageViewDidLoadImage(TTImageView.this, mImage);
+			}
 		}
 	    
 		@Override
 		public void requestDidFailWithError(TTURLRequest request, Throwable error) {
 			error.printStackTrace();
 			mRequest = null;
+			if (mDelegate != null) {
+				mDelegate.imageViewDidFailLoadWithError(TTImageView.this, error);
+			}
 		}
 
 		@Override
 		public void requestDidCancelLoad(TTURLRequest request) {
 			mRequest = null;
+			if (mDelegate != null) {
+				mDelegate.imageViewDidFailLoadWithError(TTImageView.this, null);
+			}
 		}
 	}
 	
@@ -52,6 +65,7 @@ public class TTImageView extends ImageView {
 		mImageURL = null;
 		mImage = null;
 		mHandler = new Handler();
+		mDelegate = null;
 	}
 	
 	public TTImageView(Context context, AttributeSet attrset){
@@ -60,6 +74,7 @@ public class TTImageView extends ImageView {
 		mImageURL = null;
 		mImage = null;
 		mHandler = new Handler();
+		mDelegate = null;
 	}
 	
 	private void stopLoading() {
@@ -79,7 +94,10 @@ public class TTImageView extends ImageView {
 				TTURLRequest request = new TTURLRequest(mImageURL, new TTURLRequestDelegateImpl());
 				request.setResponse(new TTURLImageResponse());
 				if (!request.send()){
-					
+					//TODO: set default image
+					/*if (_defaultImage && nil == self.image) {
+				          self.image = _defaultImage;
+				    }*/
 				}
 		    }
 		}
@@ -97,8 +115,17 @@ public class TTImageView extends ImageView {
 		   reload();
 		}
 	}
-
 	public String getImageURL() {
 		return mImageURL;
 	}
+	
+	public void setDelegate(TTImageViewDelegate delegate) {
+		if (delegate != mDelegate) {
+			mDelegate = delegate;
+		}
+	}
+	public TTImageViewDelegate getDelegate() {
+		return mDelegate;
+	}
+	
 }
